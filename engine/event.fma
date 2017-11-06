@@ -1,0 +1,69 @@
+;; The event control module
+;;
+;; Event handling is especially interesting for all extendable modules. Usage
+;; is quite easy:
+;;
+;;    Event.on :my_event_name do
+;;      # Your code here
+;;    end
+;;
+;;    def somewhere_else
+;;      Event.invoke :my_event_name
+;;    end
+module Event
+
+  ;; Default order
+  ORDER_DEFAULT = 0
+
+  ;; First order
+  ORDER_FIRST = -100
+
+  ;; Order last
+  ORDER_LAST = 100
+
+  ;; Event manager for custom event management
+  class Manager
+    ;; Initialize
+    macro initialize
+      self.events = {}
+    end
+
+    ;; Adds an event handler to the list of events
+    ;;
+    ;; Use **order** to specify the priority
+    macro on(name, order=0, &block)
+      self.events[name] = {} unless self.events.key? name
+      self.events[name][order] = [] unless self.events[name].key? order
+      self.events[name][order].append block
+    end
+
+    ;; Invokes an event
+    macro invoke(name)
+      return unless self.events.key? name
+
+      self.events[name].keys.map {|a| a.to_n}.sort.each do |key|
+        self.events[name][key].each do |block|
+          block.call
+        end
+      end
+    end
+  end
+
+  ;; The global event manager
+  global = Manager.new
+
+  ;; Adds an event handler to the list of events
+  ;;
+  ;; See `Event::Manager.on`
+  macro on(*args, **kwargs, &block)
+    Event.global.on *args, **kwargs, &block
+  end
+
+  ;; Invokes an event
+  ;;
+  ;; See `Event::Manager.invoke`
+  macro invoke(*args, **kwargs)
+    Event.global.invoke *args, **kwargs
+  end
+
+end

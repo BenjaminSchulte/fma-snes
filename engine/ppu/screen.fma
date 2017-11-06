@@ -1,0 +1,18 @@
+module PPU
+  ;; Controls the general game screen
+  module Screen
+
+    ;; Disables the screen
+    macro disable
+      LDA   #$80
+      STA   PPU.INIDISP
+    end
+
+    ;; Enables the screen
+    macro enable(brightness = $1F)
+      LDA   #brightness unless brightness.A?
+      STA   PPU.INIDISP
+    end
+
+  end
+end

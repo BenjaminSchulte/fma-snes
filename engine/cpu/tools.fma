@@ -1,0 +1,29 @@
+module CPU
+  ;; Enables or disables flags
+  ;;
+  ;; Usage examples:
+  ;;
+  ;;    CPU.set :A8, :XY16
+  macro set(*args)
+    _set   = 0
+    _clear = 0
+    args.each do |arg|
+      case arg
+      when :A8
+        _set = _set | CPU.FLAG_M
+      when :A16
+        _clear = _clear | CPU.FLAG_M
+      when :XY8
+        _set = _set | CPU.FLAG_X
+      when :XY16
+        _clear = _clear | CPU.FLAG_X
+      else
+        raise "Unknown argument for CPU.set: #{arg}"
+      end
+    end
+
+    SEP #_set   if _set
+    REP #_clear if _clear
+  end
+
+end

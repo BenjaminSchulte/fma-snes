@@ -1,0 +1,9 @@
+;; SNES core engine
+;;
+;; @author Benjamin Schulte <benjamin@dokomi.de>
+
+require "engine/cpu"
+require "engine/ppu"
+require "engine/snes"
+require "engine/event"
+require "engine/debug"

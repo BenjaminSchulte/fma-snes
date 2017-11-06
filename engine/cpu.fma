@@ -1,0 +1,2 @@
+require "cpu/registers"
+require "cpu/tools"

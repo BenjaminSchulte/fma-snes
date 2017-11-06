@@ -1,0 +1,51 @@
+module PPU
+  scope :_scope, bank: $00, at: $2000
+
+  declare :INIDISP, as: :uint8, in: _scope
+  declare :OBSEL, as: :uint8, in: _scope
+  declare :OAMADD, as: :uint16, in: _scope
+  declare :OAMDATA, as: :uint8, in: _scope
+  declare :BGMODE, as: :uint8, in: _scope
+  declare :MOSAIC, as: :uint8, in: _scope
+  declare :BGSC, as: :uint8, in: _scope, length: 4
+  declare :BG12NBA, as: :uint8, in: _scope
+  declare :BG34NBA, as: :uint8, in: _scope
+  declare :BGOFFSET_0_h, as: :uint8, in: _scope
+  declare :BGOFFSET_0_v, as: :uint8, in: _scope
+  declare :BGOFFSET_1_h, as: :uint8, in: _scope
+  declare :BGOFFSET_1_v, as: :uint8, in: _scope
+  declare :BGOFFSET_2_h, as: :uint8, in: _scope
+  declare :BGOFFSET_2_v, as: :uint8, in: _scope
+  declare :BGOFFSET_3_h, as: :uint8, in: _scope
+  declare :BGOFFSET_3_v, as: :uint8, in: _scope
+  declare :VMAIN, as: :uint8, in: _scope
+  declare :VMADD, as: :uint16, in: _scope
+  declare :VMDATA, as: :uint16, in: _scope
+
+  module M7
+    declare :sel, as: :uint8, in: _scope
+    declare :a, as: :uint8, in: _scope
+    declare :b, as: :uint8, in: _scope
+    declare :c, as: :uint8, in: _scope
+    declare :d, as: :uint8, in: _scope
+    declare :x, as: :uint8, in: _scope
+    declare :y, as: :uint8, in: _scope
+  end
+
+  declare :CGADD, as: :uint8, in: _scope
+  declare :CGDATA, as: :uint8, in: _scope
+  declare :W12SEL, as: :uint8, in: _scope
+  declare :W34SEL, as: :uint8, in: _scope
+  declare :WOBJSEL, as: :uint8, in: _scope
+  declare :WH, as: :uint8, in: _scope, length: 4
+  declare :WBGLOG, as: :uint8, in: _scope
+  declare :WOBJLOG, as: :uint8, in: _scope
+  declare :TM, as: :uint8, in: _scope
+  declare :TS, as: :uint8, in: _scope
+  declare :TMW, as: :uint8, in: _scope
+  declare :TSW, as: :uint8, in: _scope
+  declare :CGWSEL, as: :uint8, in: _scope
+  declare :CGADSUB, as: :uint8, in: _scope
+  declare :COLDATA, as: :uint8, in: _scope
+  declare :SETINI, as: :uint8, in: _scope
+end
