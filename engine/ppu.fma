@@ -4,5 +4,9 @@ require "ppu/background"
 require "ppu/screen"
 
 ;; Allow to control the Picture Processing Unit
+;;
+;; @package fma-snes
+;; @author Benjamin Schulte <benj@minschulte.de>
+;; @license MIT
 module PPU
 end

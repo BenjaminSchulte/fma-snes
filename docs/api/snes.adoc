@@ -1,0 +1,180 @@
+SNES
+====
+
+Tools for the SNES
+
+The most important part within this module is the macro which configures
+the SNES and the memory management.
+
+== Configure the ROM
+
+To configure the ROM you can use the <<snes-configure,SNES.configure>> macro.
+This macro allows you to setup the SNES header with only a few lines of code:
+
+[source,ruby]
+----
+SNES.configure do
+  game_code "CODE"
+  game_title "My first game"
+  destination :germany
+
+  map_mode $31
+end
+----
+
+== ROM memory setup
+
+You can configure the memory of your application freely. Currently only HIROM
+is supported, but it should be easy to support LOROM with only a few modifications.
+
+=== ExHIROM
+
+[source,ruby]
+----
+SNES.configure do
+  memory_map do
+    header_location $C0, $FFB0
+
+    banks $C0..$FF, address: $0000..$FFFF, located_at: $0
+    banks $00..$07, address: $8000..$FFFF, shadows_banks_from: $C0, shadows_addresses_from: $8000
+  end
+end
+----
+
+== Methods
+
+=== SNES
+
+=== SNES.Arch
+
+[[snes-arch-configure_for_ntsc]]
+==== `SNES.Arch.configure_for_ntsc`
+
+[[snes-arch-configure_for_pal]]
+==== `SNES.Arch.configure_for_pal`
+
+=== SNES.Header
+
+[[snes-header-maker_code]]
+==== `SNES.Header.maker_code(code)`
+* `code` number - the maker code
+
+Sets the maker code
+
+
+
+
+
+[[snes-header-architecture]]
+==== `SNES.Header.architecture`
+
+Returns the architecture to use
+
+[[snes-header-destination]]
+==== `SNES.Header.destination(code)`
+* `code` string - the destination name
+
+Sets the destination code
+
+The destination can be any of the following:
+* japan
+* north_america
+* all_of_europe
+* scandinavia
+* france
+* netherlands
+* spain
+* germany
+* italy
+* china
+* korea
+* common
+* canada
+* brazil
+* australia
+* X
+* Y
+* Z
+
+[[snes-header-game_code]]
+==== `SNES.Header.game_code(code)`
+* `code` string - the code of the game (max. 4 characters)
+
+Sets the game code
+
+[[snes-header-game_title]]
+==== `SNES.Header.game_title(title)`
+* `title` string - the title of the game
+
+Sets the game title
+
+[[snes-header-map_mode]]
+==== `SNES.Header.map_mode(code)`
+* `code` number - the map mode
+
+Sets the map mode
+
+[[snes-header-memory_map]]
+==== `SNES.Header.memory_map`
+
+Configures the memory map
+
+[[snes-header-on]]
+==== `SNES.Header.on`
+
+Allows to set interrupts easily
+
+[[snes-header-on_emulated]]
+==== `SNES.Header.on_emulated`
+
+Allows to set interrupts easily
+
+[[snes-header-rom_type]]
+==== `SNES.Header.rom_type(ram=false, battery=false)`
+* `ram` boolean - whether an extenal RAM is provided
+* `battery` boolean - whether a battery is provided
+
+Sets the rom type
+
+[[snes-header-version]]
+==== `SNES.Header.version(version)`
+* `version` number - the version of the game
+
+Sets the version
+
+=== SNES.MemoryConfiguration
+
+[[snes-memoryconfiguration-banks]]
+==== `SNES.MemoryConfiguration.banks`
+
+Configures the ROM banks
+
+[[snes-memoryconfiguration-header_location]]
+==== `SNES.MemoryConfiguration.header_location`
+
+Configures the header location
+
+[[snes-configure]]
+==== `SNES.configure`
+
+Configures the header
+
+This method must be called at least once in order to set up the application.
+It must be called *after* the `main` function has been declared.
+
+You can call all macros from `SNES::Header` within the `do..end` block
+
+[[snes-disable_interrupt]]
+==== `SNES.disable_interrupt`
+
+Disables interrupts generally
+
+[[snes-enable_interrupt]]
+==== `SNES.enable_interrupt`
+
+Enables interrupts generally
+
+[[snes-without_interrupt]]
+==== `SNES.without_interrupt`
+
+Invokes the block with interrupts disabled

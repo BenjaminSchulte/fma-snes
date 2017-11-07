@@ -1,0 +1,26 @@
+PPU
+===
+
+Allow to control the Picture Processing Unit
+
+== Methods
+
+=== PPU
+
+=== PPU.Screen
+
+[[ppu-screen-disable]]
+==== `PPU.Screen.disable`
+
+Disables the screen
+
+Some SNES configuration might require the screen to be turned off to work correctly.
+
+[[ppu-screen-enable]]
+==== `PPU.Screen.enable(brightness=$1F)`
+* `brightness` number - the new brightness value (between 0 for off and $1F for on)
+
+Enables the screen
+
+
+

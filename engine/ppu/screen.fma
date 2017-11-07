@@ -1,14 +1,19 @@
 module PPU
+
   ;; Controls the general game screen
   module Screen
 
     ;; Disables the screen
+    ;;
+    ;; Some SNES configuration might require the screen to be turned off to work correctly.
     macro disable
       LDA   #$80
       STA   PPU.INIDISP
     end
 
     ;; Enables the screen
+    ;;
+    ;; @param brightness=$1F number - the new brightness value (between 0 for off and $1F for on)
     macro enable(brightness = $1F)
       LDA   #brightness unless brightness.A?
       STA   PPU.INIDISP

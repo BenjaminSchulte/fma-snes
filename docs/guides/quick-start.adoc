@@ -128,4 +128,4 @@ end
 ----
 
 The last part of the example code is a little more complicated as it defines
-how to structure the memory. See the memory management guide for further details.
+how to structure the memory. See the <<../api/snes.adoc#memory-setup,memory management>> guide for further details.

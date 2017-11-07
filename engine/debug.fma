@@ -1,43 +1,67 @@
 ;; Allows to debug the application on runtime
+;;
+;; To use application debugging you might need to install an emulator which
+;; supports the `$420E` register to listen to debug commands.
+;;
+;; Also you need to create the symbol file using the `-s <file>` argument when
+;; compiling the source code, otherwise the commands won't be exported.
+;;
+;; One emulator which supports the debug interface is the modified version
+;; of https://github.com/BenjaminSchulte/bsnes-plus[bsnes-plus]. You need to
+;; start the application with the `--enable-debug-interface` argument.
+;;
+;; To enable debugging call `Debug.enable` at the start of your application.
+;;
+;; [source,ruby]
+;; ----
+;; Debug.enable
+;;
+;; def main
+;;   Debug.log "Hello world from debugger"
+;;
+;; loop:
+;;   BRA loop
+;; end
+;; ----
+;;
+;; @package fma-snes
+;; @author Benjamin Schulte <benj@minschulte.de>
+;; @license MIT
 module Debug
-
-  ;; Register to write commands to
-  ADDRESS = $420E
 
   ;; Stores whether the debugger is enabled
   ENABLED = false
 
   ;; Enables debugging
+  ;;
+  ;; This needs to be called somewhere need to the start of the application
   macro enable
     Debug.ENABLED = true
   end
 
-  ;; Stops the debugger (only in debug mode)
+  ;; Adds a BRK operator (only in debug mode)
   macro BRK
     ::BRK if ENABLED
   end
 
   ;; Invokes the code inside the block only in debug mode
+  ;;
+  ;; [source,ruby]
+  ;; ----
+  ;; Debug.only do
+  ;;   JSR debug_screen
+  ;; end
+  ;; ----
   macro only
     yield if ENABLED
   end
 
   ;; Logs a message to the emulator
   ;;
-  ;; You can add register variables by passing ${A}, ${X}, ${Y}
+  ;; This feature is not supported by all emulators
   ;;
-  ;; Known levels are:
-  ;;
-  ;; - trace
-  ;; - debug
-  ;; - info (default)
-  ;; - warn
-  ;; - error
-  ;; - fatal
-  ;;
-  ;; Example usage:
-  ;;
-  ;;    Debug.log "Register A is ${A}", level: :debug
+  ;; @param message string - the message which should be logged
+  ;; @param level=:info string - one of `trace`, `debug`, `info`, `warn`, `error` or `fatal`
   macro log(message, level=:info)
     return unless ENABLED
 
@@ -60,11 +84,11 @@ module Debug
     end
 
     _MSG = "PRINT #{LEVEL_ID} #{message}"
-    execute _MSG
+    _execute _MSG
   end
 
   ;; Executes a command
-  macro execute(command)
+  macro _execute(command)
     return unless Debug.ENABLED
     need_to_recover_p = false
 

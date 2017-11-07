@@ -17,10 +17,9 @@ module Memory
   scope :stack, in: QuickPage, length: STACK_SIZE
 end
 
-;; The SNES module
 module SNES
 
-  ;; The header object
+  ;; Modify the header
   module Header
     ;; The maker code
     MAKER_CODE = $00
@@ -50,31 +49,44 @@ module SNES
     EXPANSION_RAM_SIZE = 0
 
     ;; Sets the game code
+    ;;
+    ;; @param code string - the code of the game (max. 4 characters)
     macro game_code(code)
       self.GAME_CODE = code
     end
 
     ;; Sets the game title
+    ;;
+    ;; @param title string - the title of the game
     macro game_title(title)
       self.GAME_TITLE = title
     end
 
     ;; Sets the version
+    ;;
+    ;; @param version number - the version of the game
     macro version(version)
       self.VERSION = version
     end
 
     ;; Sets the maker code
+    ;;
+    ;; @param code number - the maker code
     macro maker_code(code)
       self.MAKER_CODE = code
     end
 
     ;; Sets the map mode
+    ;;
+    ;; @param code number - the map mode
     macro map_mode(code)
       self.MAP_MODE = code
     end
 
-    ;; Sets the map mode
+    ;; Sets the rom type
+    ;;
+    ;; @param ram=false boolean - whether an extenal RAM is provided
+    ;; @param battery=false boolean - whether a battery is provided
     macro rom_type(ram=false, battery=false)
       value = $00
       if battery && ram
@@ -86,6 +98,28 @@ module SNES
     end
 
     ;; Sets the destination code
+    ;;
+    ;; The destination can be any of the following:
+    ;; * japan
+    ;; * north_america
+    ;; * all_of_europe
+    ;; * scandinavia
+    ;; * france
+    ;; * netherlands
+    ;; * spain
+    ;; * germany
+    ;; * italy
+    ;; * china
+    ;; * korea
+    ;; * common
+    ;; * canada
+    ;; * brazil
+    ;; * australia
+    ;; * X
+    ;; * Y
+    ;; * Z
+    ;;
+    ;; @param code string - the destination name
     macro destination(code)
       case code
       when :japan
@@ -128,6 +162,8 @@ module SNES
     end
 
     ;; Returns the architecture to use
+    ;;
+    ;; @returns string - :pal or :ntsc
     macro architecture
       case self.DESTINATION_CODE
       when 2
@@ -237,7 +273,7 @@ module SNES
     end
 
     ;; Empty interrupt
-    def no_interrupt
+    def _no_interrupt
       RTI
     end
 
@@ -267,27 +303,32 @@ module SNES
       ; Interrupt
       block.dw 0
       block.dw 0
-      _write_interrupt block, Header::Interrupt.COP, no_interrupt
-      _write_interrupt block, Header::Interrupt.IRQBRK, no_interrupt
+      _write_interrupt block, Header::Interrupt.COP, _no_interrupt
+      _write_interrupt block, Header::Interrupt.IRQBRK, _no_interrupt
       block.dw 0
-      _write_interrupt block, Header::Interrupt.NMI, no_interrupt
+      _write_interrupt block, Header::Interrupt.NMI, _no_interrupt
       block.dw 0
-      _write_interrupt block, Header::Interrupt.IRQ, no_interrupt
+      _write_interrupt block, Header::Interrupt.IRQ, _no_interrupt
 
       ; Interrupt block 2
       block.dw 0
       block.dw 0
-      _write_interrupt block, Header::EmulatorInterrupt.COP, no_interrupt
+      _write_interrupt block, Header::EmulatorInterrupt.COP, _no_interrupt
       block.dw 0
       block.dw 0
-      _write_interrupt block, Header::EmulatorInterrupt.NMI, no_interrupt
+      _write_interrupt block, Header::EmulatorInterrupt.NMI, _no_interrupt
       _write_interrupt block, Header::EmulatorInterrupt.RESET, main
-      _write_interrupt block, Header::EmulatorInterrupt.IRQBRK, no_interrupt
+      _write_interrupt block, Header::EmulatorInterrupt.IRQBRK, _no_interrupt
 
     end
   end
 
-  ;; Configures the header for setup
+  ;; Configures the header
+  ;;
+  ;; This method must be called at least once in order to set up the application.
+  ;; It must be called *after* the `main` function has been declared.
+  ;;
+  ;; You can call all macros from `SNES::Header` within the `do..end` block
   macro configure
     yield @Header
     _configure_header @Header

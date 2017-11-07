@@ -1,0 +1,44 @@
+Event
+=====
+
+Allows to control application using events.
+
+An event is a simple placeholder for source code which can be written
+later on at a different point of the application.
+
+Events can be useful if you are interested in writing with modules in your
+source code.
+
+[source,ruby]
+----
+def main
+  Event.invoke :application_initialize
+
+  JMP run_application
+end
+
+Event.on :application_initialize do
+  JSR initialize_map_module
+end
+
+Event.on :application_initialize, order: Event.ORDER_FIRST do
+  JSR initialize_sound_module
+end
+----
+
+== Methods
+
+=== Event
+
+[[event-invoke]]
+==== `Event.invoke(name)`
+* `name` string - the name of the event
+
+Invokes an event
+
+[[event-on]]
+==== `Event.on(name, order=Event.ORDER_DEFAULT)`
+* `name` string - the name of the event to hook into
+* `order` number - a priority value for your hook, lower numbers will be called earlier
+
+Adds an event handler to the list of events

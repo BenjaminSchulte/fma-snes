@@ -1,0 +1,25 @@
+CPU
+===
+
+Allows to modify the SNES 65816 processor.
+
+This module provides several macros to modify states of the SNES processor
+in a more readable way
+
+== Methods
+
+=== CPU
+
+[[cpu-configure_nmi]]
+==== `CPU.configure_nmi(enabled=true, joypad=false)`
+* `enabled` boolean - whether the NMI should be enabled
+* `joypad` boolean - whether autojoypad should be enabled
+
+Configures the NMI and joypad register
+
+[[cpu-set]]
+==== `CPU.set(A=nil, XY=nil)`
+* `A` number - defines the size of the A register (either 8 or 16)
+* `XY` number - defines the size of the XY register (either 8 or 16)
+
+Enables or disables flags

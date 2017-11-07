@@ -1,2 +1,13 @@
 require "cpu/registers"
 require "cpu/tools"
+
+;; Allows to modify the SNES 65816 processor.
+;;
+;; This module provides several macros to modify states of the SNES processor
+;; in a more readable way
+;;
+;; @package fma-snes
+;; @author Benjamin Schulte <benj@minschulte.de>
+;; @license MIT
+module CPU
+end

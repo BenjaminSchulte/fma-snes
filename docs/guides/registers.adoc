@@ -1,0 +1,28 @@
+Registers
+=========
+
+This document shows you which original SNES registers can be editing using which functions.
+
+== General
+
+[cols="1,1,3a"]
+|===
+| Address | Name | Functions
+
+|  | `REP` |
+* `<<../api/cpu.adoc#cpu-set,CPU.set>>` sets CPU flags
+|  | `SEP` |
+* `<<../api/cpu.adoc#cpu-set,CPU.set>>` sets CPU flags
+|===
+
+== SNES
+
+
+[cols="1,1,3a"]
+|===
+| Address | Name | Functions
+
+| `$2100` | `INIDISP` |
+* `<<../api/ppu.adoc#ppu-screen-disable,PPU::Screen.disable>>` Disables the screen
+* `<<../api/ppu.adoc#ppu-screen-enable,PPU::Screen.enable>>` Enables the screen
+|===

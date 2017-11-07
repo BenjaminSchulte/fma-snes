@@ -6,5 +6,12 @@ WARNING: This document is still very incomplete!
 == Guides
 
 - link:./guides/quick-start.adoc[Quick start]
+- link:./guides/registers.adoc[Registers overview]
 
 == API Reference
+
+- link:./api/cpu.adoc[CPU] - Controls the 65816 CPU
+- link:./api/ppu.adoc[PPU] - Accesses the picture processing unit
+- link:./api/snes.adoc[SNES] - Tools for the super nintendo
+- link:./api/event.adoc[Event] - Event framework for modular applications
+- link:./api/debug.adoc[Debug] - Debugging tools
