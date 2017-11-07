@@ -1,0 +1,7 @@
+module SNES::Arch
+  macro configure_for_pal
+    self.FRAMES_PER_SECOND = 60
+    self.SCREEN_WIDTH = 256
+    self.SCREEN_HEIGHT = 240
+  end
+end

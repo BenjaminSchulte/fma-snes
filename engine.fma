@@ -2,6 +2,7 @@
 ;;
 ;; @author Benjamin Schulte <benjamin@dokomi.de>
 
+require "engine/arch"
 require "engine/cpu"
 require "engine/ppu"
 require "engine/snes"

@@ -26,4 +26,10 @@ module CPU
     REP #_clear if _clear
   end
 
+  ;; Configures VBLANK
+  macro configure_nmi(enabled=true, joypad=false)
+    LDA   #$0 | (enabled ?? $80) | (joypad ?? $01)
+    STA   NMITIMEN
+  end
+
 end
