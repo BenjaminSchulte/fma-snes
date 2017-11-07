@@ -1,0 +1,10 @@
+Library documentation
+=====================
+
+WARNING: This document is still very incomplete!
+
+== Guides
+
+- link:./guides/quick-start.adoc[Quick start]
+
+== API Reference

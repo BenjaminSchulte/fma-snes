@@ -1,0 +1,72 @@
+SNES library
+============
+
+This SNES library is a library which helps you to get started with SNES development
+using the FMA (famicom macro assembler).
+
+WARNING: This library is still in a very, very alpha version! Core features might
+change without any backwards compatibility.
+
+---
+
+== Installation
+
+To install this library, simply checkout the git repository to any folder you like.
+When compiling your application with FMA add the library as include folder:
+
+[source,bash]
+fma -I /path/to/this/repository -o game.sfc game.fma
+
+== Documentation
+
+To start using this library have a look at the link:./docs/guides/quick-start.adoc[Quick start] documentation.
+
+A full reference can be found at the link:./docs/index.adoc[library documentation].
+
+
+[[example]]
+== Example usage
+
+This is a simple code for initializing the ROM in HIROM
+
+[source,ruby]
+----
+require "engine"
+require "engine/header/snes"
+
+Debug.enable
+
+def main
+  SNES.initialize
+
+  Debug.log "Hello world!"
+
+loop:
+  BRA loop
+end
+
+SNES.configure do
+
+  game_code "GAME"
+  game_title "My first game"
+  destination :germany
+
+  map_mode $31
+  rom_type ram: true, battery: true
+
+  memory_map do
+
+    header_location $C0, $FFB0
+
+    banks $C0..$FF, address: $0000..$FFFF, located_at: $0
+    banks $00..$07, address: $8000..$FFFF, shadows_banks_from: $C0, shadows_addresses_from: $8000
+
+  end
+
+end
+----
+
+
+== License
+
+FMA is licensed with the link:./LICENSE.md[MIT] license. Author: Benjamin Schulte

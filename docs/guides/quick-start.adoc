@@ -1,0 +1,131 @@
+Quick start
+===========
+
+This SNES library helps you with developing your own SNES games in a easy way
+keeping a clean code using the FMA assembler.
+
+
+== Installation
+
+To use the library you need to install FMA and check out this library:
+
+. To start developing you might need to check out the FMA assembler first. In
+order to do you need to *install nodejs and npm* following their
+https://www.npmjs.com/get-npm[install instructions].
+
+. After installing *npm* you can install fma via the command line:
+[source,bash]
+npm install -g fma-cli
+
+. Download or check out this git repository to any folder on your computer.
+[source,bash]
+git clone https://github.com/BenjaminSchulte/fma-snes libsnes
+
+That's all about installing this library.
+
+
+== Setting up a project
+
+To start a new project, simply create a new folder wherever you want on your
+computer and create a new file called `main.fma` and paste the following content
+into it:
+
+[source,ruby]
+----
+
+require "engine"
+require "engine/header/snes"
+
+Debug.enable
+
+def main
+  SNES.initialize
+
+  Debug.log "Hello world!"
+
+loop:
+  BRA loop
+end
+
+SNES.configure do
+
+  game_code "GAME"
+  game_title "My first game"
+  destination :germany
+
+  map_mode $31
+  rom_type ram: true, battery: true
+
+  memory_map do
+
+    header_location $C0, $FFB0
+
+    banks $C0..$FF, address: $0000..$FFFF, located_at: $0
+    banks $00..$07, address: $8000..$FFFF, shadows_banks_from: $C0, shadows_addresses_from: $8000
+
+  end
+
+end
+----
+
+An exmplanation about this code will follow below, but first let's check whether
+everything is set up correctly.
+
+
+== Compiling your project
+
+From the command line within your project folder enter the following:
+
+[source,bash]
+fma -I /path/to/your/libsnes -o main.sfc -s main.sym main.fma
+
+You need to replace `/path/to/your/libsnes` with the folder where you checked out
+this library.
+
+If everything went well, you should find a file called `main.sfc` in your project
+folder which you can start with any emulator.
+
+For advanced debugging support you can use a debugger which supports the FMA
+debug interface, for example https://github.com/BenjaminSchulte/bsnes-plus[bsnes plus]
+using the command line:
+
+[source,bash]
+bsnes-plus --enable-debug-interface --show-debugger ./main.sfc
+
+Using this debugger you should get a "Hello world!" message in the log.
+
+
+== About the example code
+
+The first two lines include the engine and define which SNES header should be
+used. Currently these two lines are mandatory.
+
+[source,ruby]
+require "engine"
+require "engine/header/snes"
+
+Debugging is disabled per default. All commands starting with `Debug` will
+vanish when compiling. This line enabled debugging:
+
+[source,ruby]
+Debug.enable
+
+The `main` routine is the first routine which is called as soon as the application
+has been initialized. It resets all SNES registers to a safe state using the
+`SNES.initialize` routine, prints a debug message and then dies using a
+neverending loop.
+
+[source,ruby]
+----
+def main
+  SNES.initialize
+
+  Debug.log "Hello world!"
+
+loop:
+  BRA loop
+end
+----
+
+The last part of the example code is a little more complicated as it defines
+how to structure the memory. See the memory management guide for further details.
