@@ -22,6 +22,7 @@ SNES.configure do
 end
 ----
 
+[[memory-setup]]
 == ROM memory setup
 
 You can configure the memory of your application freely. Currently only HIROM
@@ -163,18 +164,3 @@ This method must be called at least once in order to set up the application.
 It must be called *after* the `main` function has been declared.
 
 You can call all macros from `SNES::Header` within the `do..end` block
-
-[[snes-disable_interrupt]]
-==== `SNES.disable_interrupt`
-
-Disables interrupts generally
-
-[[snes-enable_interrupt]]
-==== `SNES.enable_interrupt`
-
-Enables interrupts generally
-
-[[snes-without_interrupt]]
-==== `SNES.without_interrupt`
-
-Invokes the block with interrupts disabled

@@ -7,7 +7,79 @@ Allow to control the Picture Processing Unit
 
 === PPU
 
+=== PPU.VRAM
+
+[[ppu-vram-configure]]
+==== `PPU.VRAM.configure(access_mode=:uint8, map_mode=:none, increment_size=1)`
+* `access_mode` string - can be either `:uint8` or `:uint16`
+* `map_mode` string
+* `increment_size` number - can be either `1`, `32` or `128`
+
+Configures the access port for reading/writing
+
+[[ppu-vram-copy_16]]
+==== `PPU.VRAM.copy_16(origin, size, destination, index=0)`
+* `origin` address - the address to copy from
+* `size` number - the size of bytes to copy
+* `destination` address - the address to copy data to
+* `index` number - the DMA channel to use
+
+Copies data directly into the VRAM
+
+[[ppu-vram-set_address]]
+==== `PPU.VRAM.set_address(address)`
+* `address` address - the target address
+
+Sets the target address of the read/write port
+
+
+
+=== PPU.Palette
+
+[[ppu-palette-set_color_index]]
+==== `PPU.Palette.set_color_index`
+
+Sets the current address to write/read
+
+[[ppu-palette-write]]
+==== `PPU.Palette.write`
+
+Writes a color
+
+[[ppu-palette-write_rgb]]
+==== `PPU.Palette.write_rgb`
+
+Writes a color using RGA
+
+Values must be between `0` and `15`
+
 === PPU.Screen
+
+[[ppu-screen-configure_color_math_designation]]
+==== `PPU.Screen.configure_color_math_designation(mode, half=false, bg1=false, bg2=false, bg3=false, bg4=false, obj=false, backdrop=false)`
+* `mode` string - either `add` or `subtract`
+* `half` boolean - use avarage between both screens
+* `bg1` boolean - Respect BG1
+* `bg2` boolean - Respect BG2
+* `bg3` boolean - Respect BG3
+* `bg4` boolean - Respect BG4
+* `obj` boolean - Respect sprites
+* `backdrop` boolean - Respect backdrop
+
+Configures math designation
+
+[[ppu-screen-configure_window_mask_bg12]]
+==== `PPU.Screen.configure_window_mask_bg12(bg1_win1=false, bg1_win2=false, bg2_win1=false, bg2_win2=false, bg1_win1_inv=false, bg1_win2_inv=false, bg2_win1_inv=false, bg2_win2_inv=false)`
+* `bg1_win1` boolean - Enable window 1
+* `bg1_win2` boolean - Enable window 2
+* `bg2_win1` boolean - Enable window 1
+* `bg2_win2` boolean - Enable window 2
+* `bg1_win1_inv` boolean - Invert window 1
+* `bg1_win2_inv` boolean - Invert window 2
+* `bg2_win1_inv` boolean - Invert window 1
+* `bg2_win2_inv` boolean - Invert window 2
+
+Configures window masks for BG1 and BG2
 
 [[ppu-screen-disable]]
 ==== `PPU.Screen.disable`
@@ -16,11 +88,198 @@ Disables the screen
 
 Some SNES configuration might require the screen to be turned off to work correctly.
 
+[[ppu-screen-configure_sub_screen]]
+==== `PPU.Screen.configure_sub_screen(bg1=false, bg2=false, bg3=false, bg4=false, obj=false)`
+* `bg1` boolean - BG1 is visible
+* `bg2` boolean - BG2 is visible
+* `bg3` boolean - BG3 is visible
+* `bg4` boolean - BG4 is visible
+* `obj` boolean - Sprites are visible
+
+Configures the visibility of the sub screen
+
+[[ppu-screen-configure_main_window]]
+==== `PPU.Screen.configure_main_window(bg1=false, bg2=false, bg3=false, bg4=false, obj=false)`
+* `bg1` boolean - BG1 is visible
+* `bg2` boolean - BG2 is visible
+* `bg3` boolean - BG3 is visible
+* `bg4` boolean - BG4 is visible
+* `obj` boolean - Sprites are visible
+
+Configures the visibility of the main window mask
+
+[[ppu-screen-configure_sub_window]]
+==== `PPU.Screen.configure_sub_window(bg1=false, bg2=false, bg3=false, bg4=false, obj=false)`
+* `bg1` boolean - BG1 is visible
+* `bg2` boolean - BG2 is visible
+* `bg3` boolean - BG3 is visible
+* `bg4` boolean - BG4 is visible
+* `obj` boolean - Sprites are visible
+
+Configures the visibility of the sub window mask
+
+[[ppu-screen-configure_color_addition]]
+==== `PPU.Screen.configure_color_addition(clip=:never, prevent_math=:never, use_subscreen=false, direct_color_mode=false)`
+* `clip` string
+* `prevent_math` string
+* `use_subscreen` boolean
+* `direct_color_mode` boolean
+
+Configures color addition
+
+Parameters `clip` and `prevent_math` can be configured as one fo the following:
+
+|===
+| mode
+
+| `never`
+| `outside`
+| `inside`
+| `always`
+|===
+
+[[ppu-screen-configure_window_logic_obj]]
+==== `PPU.Screen.configure_window_logic_obj(obj=:calc_or, color=:calc_or)`
+* `obj` string - The configuration mode
+* `color` string - The configuration mode
+
+Configures the window logic for objects
+
+The configuration modes can be one of: `calc_or`, `calc_and`, `calc_xor` or `calc_xnor`
+
+[[ppu-screen-configure_main_screen]]
+==== `PPU.Screen.configure_main_screen(bg1=false, bg2=false, bg3=false, bg4=false, obj=false)`
+* `bg1` boolean - BG1 is visible
+* `bg2` boolean - BG2 is visible
+* `bg3` boolean - BG3 is visible
+* `bg4` boolean - BG4 is visible
+* `obj` boolean - Sprites are visible
+
+Configures the visibility of the main screen
+
+[[ppu-screen-configure_window_mask_bg34]]
+==== `PPU.Screen.configure_window_mask_bg34(bg3_win1=false, bg3_win2=false, bg4_win1=false, bg4_win2=false, bg3_win1_inv=false, bg3_win2_inv=false, bg4_win1_inv=false, bg4_win2_inv=false)`
+* `bg3_win1` boolean - Enable window 1
+* `bg3_win2` boolean - Enable window 2
+* `bg4_win1` boolean - Enable window 1
+* `bg4_win2` boolean - Enable window 2
+* `bg3_win1_inv` boolean - Invert window 1
+* `bg3_win2_inv` boolean - Invert window 2
+* `bg4_win1_inv` boolean - Invert window 1
+* `bg4_win2_inv` boolean - Invert window 2
+
+Configures window masks for BG3 and BG4
+
+[[ppu-screen-configure_window_mask_obj]]
+==== `PPU.Screen.configure_window_mask_obj(obj_win1=false, obj_win2=false, color_win1=false, color_win2=false, obj_win1_inv=false, obj_win2_inv=false, color_win1_inv=false, color_win2_inv=false)`
+* `obj_win1` boolean - Enable window 1
+* `obj_win2` boolean - Enable window 2
+* `color_win1` boolean - Enable window 1
+* `color_win2` boolean - Enable window 2
+* `obj_win1_inv` boolean - Invert window 1
+* `obj_win2_inv` boolean - Invert window 2
+* `color_win1_inv` boolean - Invert window 1
+* `color_win2_inv` boolean - Invert window 2
+
+Configures window masks for sprites and backdrop color
+
+[[ppu-screen-configure_window_position]]
+==== `PPU.Screen.configure_window_position(win1_left=nil, win2_left=nil, win1_right=nil, win2_right=nil)`
+* `win1_left` number - the window position
+* `win2_left` number - the window position
+* `win1_right` number - the window position
+* `win2_right` number - the window position
+
+Configures the window positions
+
+[[ppu-screen-configure_window_logic_bg]]
+==== `PPU.Screen.configure_window_logic_bg(bg1=:calc_or, bg2=:calc_or, bg3=:calc_or, bg4=:calc_or)`
+* `bg1` string - The configuration mode
+* `bg2` string - The configuration mode
+* `bg3` string - The configuration mode
+* `bg4` string - The configuration mode
+
+Configures the window logic for backgrounds
+
+The configuration modes can be one of: `calc_or`, `calc_and`, `calc_xor` or `calc_xnor`
+
+[[ppu-screen-disabled]]
+==== `PPU.Screen.disabled`
+
+Invokes a callback with the screen being disabled
+
+[source,ruby]
+PPU::Screen.disabled do
+  ...
+end
+
 [[ppu-screen-enable]]
 ==== `PPU.Screen.enable(brightness=$1F)`
 * `brightness` number - the new brightness value (between 0 for off and $1F for on)
 
 Enables the screen
 
+=== PPU.Background
 
+[[ppu-background-set_bg_mode]]
+==== `PPU.Background.set_bg_mode(mode, priority=false, large_bg1=false, large_bg2=false, large_bg4=false, large_bg3=false)`
+* `mode` string - the mode to be selected
+* `priority` boolean - priority flag
+* `large_bg1` boolean - whether BG1 should be 64x64
+* `large_bg2` boolean - whether BG2 should be 64x64
+* `large_bg4` boolean - whether BG4 should be 64x64
+* `large_bg3` boolean - whether BG3 should be 64x64
 
+Sets the current background mode
+
+The `mode` parameter might be one of the following:
+
+|===
+| Mode | Index | BG1 | BG2 | BG3 | BG4
+
+| `BG_2_2_2_2` | 0 | 4 | 4 | 4 | 4
+| `BG_4_4_2` | 1 | 16 | 16 | 4 | -
+| `BG_4_4` | 2 | 16 | 16 | - | -
+| `BG_8_4` | 3 | 256 | 16 | - | -
+| `BG_8_2` | 4 | 256 | 4 | - | -
+| `BG_4_2` | 5 | 16 | 4 | - | -
+| `BG_4` | 6 | 16 | - | - | -
+| `BG_8` | 7 | 256 | - | - | -
+|===
+
+[[ppu-background-set_character_address]]
+==== `PPU.Background.set_character_address(bg1=nil, bg2=nil, bg3=nil, bg4=nil)`
+* `bg1` address - the address for BG1
+* `bg2` address - the address for BG2
+* `bg3` address - the address for BG3
+* `bg4` address - the address for BG4
+
+Sets the character address for one or many backgrounds
+
+Please note, that BG1+BG2 and BG3+BG4 are always configured at the
+same time. If you only want to modify BG1, but not BG2, you will
+have to write a wrapper routine for that by yourself.
+
+All addresses have to be aligned to $1000
+
+[[ppu-background-set_specific_tilemap_address]]
+==== `PPU.Background.set_specific_tilemap_address(index, address, mirror_x, mirror_y)`
+* `index` number - the index of the background, starting from 1
+* `address` address - the address of the tilemap
+* `mirror_x` boolean - whether the mirror the background
+* `mirror_y` boolean - whether the mirror the background
+
+Sets the tilemap address for a single background
+
+[[ppu-background-set_tilemap_address]]
+==== `PPU.Background.set_tilemap_address(bg1=nil, bg2=nil, bg3=nil, bg4=nil, mirror_x=false, mirror_y=false)`
+* `bg1` address - the address for BG1
+* `bg2` address - the address for BG2
+* `bg3` address - the address for BG3
+* `bg4` address - the address for BG4
+* `mirror_x` boolean - whether to mirror the backgrounds
+* `mirror_y` boolean - whether to mirror the backgrounds
+
+Sets the tilemap address for one or many backgrounds
+
+The address must be aligned to $800

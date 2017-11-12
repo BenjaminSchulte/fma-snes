@@ -6,9 +6,21 @@ Allows to modify the SNES 65816 processor.
 This module provides several macros to modify states of the SNES processor
 in a more readable way
 
+
+
+
+Allow to use the DMA
+
 == Methods
 
 === CPU
+
+[[cpu-set]]
+==== `CPU.set(A=nil, XY=nil)`
+* `A` number - defines the size of the A register (either 8 or 16)
+* `XY` number - defines the size of the XY register (either 8 or 16)
+
+Enables or disables flags
 
 [[cpu-configure_nmi]]
 ==== `CPU.configure_nmi(enabled=true, joypad=false)`
@@ -17,9 +29,19 @@ in a more readable way
 
 Configures the NMI and joypad register
 
-[[cpu-set]]
-==== `CPU.set(A=nil, XY=nil)`
-* `A` number - defines the size of the A register (either 8 or 16)
-* `XY` number - defines the size of the XY register (either 8 or 16)
+[[cpu-trigger_dma]]
+==== `CPU.trigger_dma`
 
-Enables or disables flags
+Triggers all indices passed to the arguments
+
+[[cpu-with_bank]]
+==== `CPU.with_bank(bank)`
+* `bank` number - the bank to use
+
+Sets the data bank to a specific one but safes the old one
+
+[[cpu-with_pushed]]
+==== `CPU.with_pushed(register... string - names of the registers)`
+* `register... string - names of the registers` undefined
+
+Pushes all registers onto the stack before invoking th block
