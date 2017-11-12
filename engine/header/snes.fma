@@ -254,10 +254,8 @@ module SNES
     locate_at bank: 0
 
     ;; The core initialize routine which initializes the application
+    @register A:8, XY: 8
     def main
-      A.set_size 8
-      X.set_size 8
-
       SEI
       CLC
       XCE
@@ -343,5 +341,3 @@ module SNES
     end
   end
 end
-
-locate_at bank: $C0

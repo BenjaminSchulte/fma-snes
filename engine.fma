@@ -4,6 +4,7 @@
 
 require "engine/arch"
 require "engine/cpu"
+require "engine/dma"
 require "engine/ppu"
 require "engine/snes"
 require "engine/event"

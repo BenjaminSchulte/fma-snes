@@ -38,4 +38,30 @@ module CPU
     STA   NMITIMEN
   end
 
+  ;; Sets the data bank to a specific one but safes the old one
+  ;;
+  ;; @param bank number - the bank to use
+  macro with_bank(bank)
+    BRK
+    PHB
+    PEA   #bank << 8
+    PLB
+    PLB
+    yield
+    PLB
+  end
+
+  ;; Pushes all registers onto the stack before invoking th block
+  ;;
+  ;; @param register... string - names of the registers
+  macro with_pushed(*register)
+    register.each do |arg|
+      PH\{arg}
+    end
+    yield
+    register.reverse.each do |arg|
+      PL\{arg}
+    end
+  end
+
 end

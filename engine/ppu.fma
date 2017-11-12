@@ -2,6 +2,8 @@ require "ppu/registers"
 
 require "ppu/background"
 require "ppu/screen"
+require "ppu/palette"
+require "ppu/vram"
 
 ;; Allow to control the Picture Processing Unit
 ;;

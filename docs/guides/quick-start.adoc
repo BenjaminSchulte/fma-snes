@@ -33,6 +33,8 @@ into it:
 [source,ruby]
 ----
 
+locate_at bank: $C0
+
 require "engine"
 require "engine/header/snes"
 
@@ -68,7 +70,7 @@ SNES.configure do
 end
 ----
 
-An exmplanation about this code will follow below, but first let's check whether
+An explanation about this code will follow below, but first let's check whether
 everything is set up correctly.
 
 
@@ -97,7 +99,13 @@ Using this debugger you should get a "Hello world!" message in the log.
 
 == About the example code
 
-The first two lines include the engine and define which SNES header should be
+The first line defines the whole source code to be located at the bank `$C0`
+by default. This can be overridden per function or module with the same command.
+
+[source,ruby]
+locate_at bank: $C0
+
+The next two lines include the engine and define which SNES header should be
 used. Currently these two lines are mandatory.
 
 [source,ruby]

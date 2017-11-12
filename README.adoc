@@ -2,7 +2,7 @@ SNES library
 ============
 
 This SNES library is a library which helps you to get started with SNES development
-using the FMA (famicom macro assembler).
+using the https://github.com/BenjaminSchulte/fma[FMA] (famicom macro assembler).
 
 WARNING: This library is still in a very, very alpha version! Core features might
 change without any backwards compatibility.

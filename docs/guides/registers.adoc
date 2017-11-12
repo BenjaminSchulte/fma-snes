@@ -23,6 +23,59 @@ This document shows you which original SNES registers can be editing using which
 | Address | Name | Functions
 
 | `$2100` | `INIDISP` |
-* `<<../api/ppu.adoc#ppu-screen-disable,PPU::Screen.disable>>` Disables the screen
-* `<<../api/ppu.adoc#ppu-screen-enable,PPU::Screen.enable>>` Enables the screen
+* <<../api/ppu.adoc#ppu-screen-disable,PPU::Screen.disable>> Disables the screen
+* <<../api/ppu.adoc#ppu-screen-enable,PPU::Screen.enable>> Enables the screen
+| `$2105` | `BGMODE` |
+* <<../api/ppu.adoc#ppu-background-set-bg-mode,PPU::Background.set_bg_mode>> Configures the background mode
+| `$2107` | `BG1SC` |
+* <<../api/ppu.adoc#ppu-background-set-tilemap-address,PPU::Background.set_tilemap_address>> Sets tilemap addresses
+| `$2108` | `BG2SC` |
+* <<../api/ppu.adoc#ppu-background-set-tilemap-address,PPU::Background.set_tilemap_address>> Sets tilemap addresses
+| `$2109` | `BG3SC` |
+* <<../api/ppu.adoc#ppu-background-set-tilemap-address,PPU::Background.set_tilemap_address>> Sets tilemap addresses
+| `$210A` | `BG4SC` |
+* <<../api/ppu.adoc#ppu-background-set-tilemap-address,PPU::Background.set_tilemap_address>> Sets tilemap addresses
+| `$210B` | `BG12NBA` |
+* <<../api/ppu.adoc#ppu-background-set-character-address,PPU::Background.set_character_address>> Sets character addresses
+| `$210C` | `BG34NBA` |
+* <<../api/ppu.adoc#ppu-background-set-character-address,PPU::Background.set_character_address>> Sets character addresses
+| `$2115` | `VMAIN` |
+* <<../api/ppu.adoc#ppu-vram-configure,PPU::VRAM.configure>> Configures the VRAM copy mode
+| `$2116` | `VMADDL`, `VMADDH` |
+* <<../api/ppu.adoc#ppu-vram-set-address,PPU::VRAM.set_address>> Configures the VRAM write target
+| `$2123` | `W12SEL` |
+* <<../api/ppu.adoc#ppu-screen-configure-window-mask-bg12,PPU::Screen.configure_window_mask_bg12>> Configures the window mask for BG1 and BG2
+| `$2124` | `W34SEL` |
+* <<../api/ppu.adoc#ppu-screen-configure-window-mask-bg34,PPU::Screen.configure_window_mask_bg34>> Configures the window mask for BG3 and BG4
+| `$2125` | `WOBJSEL` |
+* <<../api/ppu.adoc#ppu-screen-configure-window-mask-obj,PPU::Screen.configure_window_mask_obj>> Configures the window mask for sprites and backdrop color
+| `$2126` | `WH0` |
+* <<../api/ppu.adoc#ppu-screen-configure-window-position,PPU::Screen.configure_window_position>> Configures the window position
+| `$2127` | `WH1` |
+* <<../api/ppu.adoc#ppu-screen-configure-window-position,PPU::Screen.configure_window_position>> Configures the window position
+| `$2128` | `WH2` |
+* <<../api/ppu.adoc#ppu-screen-configure-window-position,PPU::Screen.configure_window_position>> Configures the window position
+| `$2129` | `WH3` |
+* <<../api/ppu.adoc#ppu-screen-configure-window-position,PPU::Screen.configure_window_position>> Configures the window position
+| `$212A` | `WBGLOG` |
+* <<../api/ppu.adoc#ppu-screen-configure-window-logic-bg,PPU::Screen.configure_window_logic_bg>> Configures the window logic
+| `$212B` | `WOBJLOG` |
+* <<../api/ppu.adoc#ppu-screen-configure-window-logic-obj,PPU::Screen.configure_window_logic_obj>> Configures the window logic
+| `$212C` | `TM` |
+* <<../api/ppu.adoc#ppu-screen-configure-main-screen,PPU::Screen.configure_main_screen>> Configures the main screen visibility
+| `$212D` | `TS` |
+* <<../api/ppu.adoc#ppu-screen-configure-sub-screen,PPU::Screen.configure_sub_screen>> Configures the sub screen visibility
+| `$212E` | `TMW` |
+* <<../api/ppu.adoc#ppu-screen-configure-main-window,PPU::Screen.configure_main_window>> Configures the main window visibility
+| `$212F` | `TSW` |
+* <<../api/ppu.adoc#ppu-screen-configure-sub-window,PPU::Screen.configure_sub_window>> Configures the sub window visibility
+| `$2130` | `CGWSEL` |
+* <<../api/ppu.adoc#ppu-screen-configure-color-addition,PPU::Screen.configure_color_addition>> Configures the color math register
+| `$2131` | `CGADSUB` |
+* <<../api/ppu.adoc#ppu-screen-configure-color-math-designation,PPU::Screen.configure_color_math_designation>> Configures the color math register
+| `$4200` | `NMITIMEN` |
+* <<../api/cpu.adoc#cpu-configure-nmi,CPU.configure_nmi>> Configures the NMI, autojoy, etc.
+| `$420B` | `MDMAEN` |
+* <<../api/cpu.adoc#cpu-trigger-dma,CPU.trigger_dma>> Triggers one or more DMAs
+* <<../api/cpu.adoc#cpu-dmaregister-trgger,DMA[x].trigger>> Triggers one DMA
 |===

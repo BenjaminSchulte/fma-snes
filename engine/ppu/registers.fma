@@ -1,4 +1,9 @@
 module PPU
+  class _BGOFFSET
+    declare :horizontal, as: :uint8
+    declare :vertical, as: :uint8
+  end
+
   scope :_scope, bank: $00, at: $2000
 
   declare :INIDISP, as: :uint8, in: _scope
@@ -10,14 +15,7 @@ module PPU
   declare :BGSC, as: :uint8, in: _scope, length: 4
   declare :BG12NBA, as: :uint8, in: _scope
   declare :BG34NBA, as: :uint8, in: _scope
-  declare :BGOFFSET_0_h, as: :uint8, in: _scope
-  declare :BGOFFSET_0_v, as: :uint8, in: _scope
-  declare :BGOFFSET_1_h, as: :uint8, in: _scope
-  declare :BGOFFSET_1_v, as: :uint8, in: _scope
-  declare :BGOFFSET_2_h, as: :uint8, in: _scope
-  declare :BGOFFSET_2_v, as: :uint8, in: _scope
-  declare :BGOFFSET_3_h, as: :uint8, in: _scope
-  declare :BGOFFSET_3_v, as: :uint8, in: _scope
+  declare :BGOFFSET, as: _BGOFFSET, in: _scope, length: 4
   declare :VMAIN, as: :uint8, in: _scope
   declare :VMADD, as: :uint16, in: _scope
   declare :VMDATA, as: :uint16, in: _scope

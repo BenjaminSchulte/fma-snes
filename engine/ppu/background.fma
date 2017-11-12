@@ -2,5 +2,113 @@ module PPU
   ;; Controls the backgrounds
   module Background
 
+    ;; Sets the tilemap address for one or many backgrounds
+    ;;
+    ;; The address must be aligned to $800
+    ;;
+    ;; @param bg1=nil address - the address for BG1
+    ;; @param bg2=nil address - the address for BG2
+    ;; @param bg3=nil address - the address for BG3
+    ;; @param bg4=nil address - the address for BG4
+    ;; @param mirror_x=false boolean - whether to mirror the backgrounds
+    ;; @param mirror_y=false boolean - whether to mirror the backgrounds
+    macro set_tilemap_address(bg1=nil, bg2=nil, bg3=nil, bg4=nil, mirror_x=false, mirror_y=false)
+      set_specific_tilemap_address 1, bg1, mirror_x, mirror_y
+      set_specific_tilemap_address 2, bg2, mirror_x, mirror_y
+      set_specific_tilemap_address 3, bg3, mirror_x, mirror_y
+      set_specific_tilemap_address 4, bg4, mirror_x, mirror_y
+    end
+
+    ;; Sets the tilemap address for a single background
+    ;;
+    ;; @param index number - the index of the background, starting from 1
+    ;; @param address address - the address of the tilemap
+    ;; @param mirror_x boolean - whether the mirror the background
+    ;; @param mirror_y boolean - whether the mirror the background
+    macro set_specific_tilemap_address(index, address, mirror_x, mirror_y)
+      return if address.nil?
+
+      LDA   #(mirror_x ?? 1) | (mirror_y ?? 2) | ((address >> 9) & $FC)
+      STA   PPU.BGSC[index - 1]
+    end
+
+    ;; Sets the character address for one or many backgrounds
+    ;;
+    ;; Please note, that BG1+BG2 and BG3+BG4 are always configured at the
+    ;; same time. If you only want to modify BG1, but not BG2, you will
+    ;; have to write a wrapper routine for that by yourself.
+    ;;
+    ;; All addresses have to be aligned to $1000
+    ;;
+    ;; @param bg1=nil address - the address for BG1
+    ;; @param bg2=nil address - the address for BG2
+    ;; @param bg3=nil address - the address for BG3
+    ;; @param bg4=nil address - the address for BG4
+    macro set_character_address(bg1=nil, bg2=nil, bg3=nil, bg4=nil)
+      unless bg1.nil? && bg2.nil?
+        _set_character_address PPU.BG12NBA, bg1, bg2
+      end
+      unless bg3.nil? && bg4.nil?
+        _set_character_address PPU.BG34NBA, bg3, bg4
+      end
+    end
+
+    macro _set_character_address(target, low, high)
+      value = 0
+      value |= ((low >> 13) & $0F) unless low.nil?
+      value |= ((high >> 9) & $F0) unless high.nil?
+      LDA   #value
+      STA   target
+    end
+
+    ;; Sets the current background mode
+    ;;
+    ;; The `mode` parameter might be one of the following:
+    ;;
+    ;; |===
+    ;; | Mode | Index | BG1 | BG2 | BG3 | BG4
+    ;;
+    ;; | `BG_2_2_2_2` | 0 | 4 | 4 | 4 | 4
+    ;; | `BG_4_4_2` | 1 | 16 | 16 | 4 | -
+    ;; | `BG_4_4` | 2 | 16 | 16 | - | -
+    ;; | `BG_8_4` | 3 | 256 | 16 | - | -
+    ;; | `BG_8_2` | 4 | 256 | 4 | - | -
+    ;; | `BG_4_2` | 5 | 16 | 4 | - | -
+    ;; | `BG_4` | 6 | 16 | - | - | -
+    ;; | `BG_8` | 7 | 256 | - | - | -
+    ;; |===
+    ;;
+    ;; @param mode string - the mode to be selected
+    ;; @param priority=false boolean - priority flag
+    ;; @param large_bg1=false boolean - whether BG1 should be 64x64
+    ;; @param large_bg2=false boolean - whether BG2 should be 64x64
+    ;; @param large_bg4=false boolean - whether BG4 should be 64x64
+    ;; @param large_bg3=false boolean - whether BG3 should be 64x64
+    macro set_bg_mode(mode, priority=false, large_bg1=false, large_bg2=false, large_bg3=false, large_bg4=false)
+      case mode
+      when :BG_2_2_2_2
+        mode_value = 0
+      when :BG_4_4_2
+        mode_value = 1
+      when :BG_4_4
+        mode_value = 2
+      when :BG_8_4
+        mode_value = 3
+      when :BG_8_2
+        mode_value = 4
+      when :BG_4_2
+        mode_value = 5
+      when :BG_4
+        mode_value = 6
+      when :BG_8
+        mode_value = 7
+      else
+        raise "Invalid mode for set_bg_mode: #{mode}"
+      end
+
+      LDA   #mode_value | (priority ?? 8) | (large_bg1 ?? $10) | (large_bg2 ?? $20) | (large_bg3 ?? $30) | (large_bg4 ?? $40)
+      STA   PPU.BGMODE
+    end
+
   end
 end
