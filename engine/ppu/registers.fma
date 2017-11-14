@@ -4,7 +4,7 @@ module PPU
     declare :vertical, as: :uint8
   end
 
-  scope :_scope, bank: $00, at: $2000
+  scope :_scope, bank: $00, at: $2100
 
   declare :INIDISP, as: :uint8, in: _scope
   declare :OBSEL, as: :uint8, in: _scope
