@@ -1,0 +1,130 @@
+module Debug
+
+  ;; Builds a single expression
+  macro _build_expression(expr)
+    if expr.is_a? String
+      case expr
+      when :last
+        "@LAST_VALUE"
+      when :vcounter
+        "@VCOUNTER"
+      when :vcounter_max
+        255.to_s(16)
+      else
+        expr
+      end
+    elsif expr.is_a? Number
+      return expr.to_s(16)
+    elsif expr.is_a? Measurement
+      return expr.id
+    else
+      return "???"
+    end
+  end
+
+  ;; Allows to configure measurements
+  class Measurement
+
+    ;; Constructor
+    macro initialize(name, left, op=:add, right=0)
+      self._name = name
+      self._trigger_on_execute = nil
+      self._trigger_after_calculation = nil
+      self._left = left
+      self._op = op
+      self._right = right
+      self._is_built = false
+    end
+
+    ;; Triggers the measurement
+    macro trigger
+    label:
+      self._trigger_on_execute = label
+      self.build
+    end
+
+    ;; Triggers the measurement after another one
+    macro after(other=nil)
+      self._trigger_after_calculation = other.id
+    end
+
+    ;; Returns my ID
+    macro id
+      self.build
+      return self._name
+    end
+
+    ;; Builds the measurment
+    macro build
+      return if self._is_built
+      self._is_built = true
+
+      left = _build_expression(self._left)
+      right = _build_expression(self._right)
+
+      if !self._trigger_on_execute.nil?
+        Compiler.configure_debugger "MEASUREMENT #{self._name} ON_EXECUTE:", self._trigger_on_execute.to_future_number, " ", left, " ", self._op, " ", right
+      elsif !self._trigger_after_calculation.nil?
+        Compiler.configure_debugger "MEASUREMENT #{self._name} ON_TRIGGER:", self._trigger_after_calculation.to_future_number, " ", left, " ", self._op, " ", right
+      else
+        Compiler.configure_debugger "MEASUREMENT #{self._name} ", left, " ", self._op, " ", right
+      end
+    end
+  end
+
+  ;; Graph helper
+  class Graph
+    macro initialize(name)
+      self._name = name
+      self._lines = []
+      self._ranges = []
+    end
+
+    macro range(name, offset)
+      self._ranges.append [
+        "\"#{name}\" ",
+        _build_expression(offset)
+      ]
+    end
+
+    macro add(name, measurement, type=:line, offset=:absolute)
+      self._lines.append [
+        "\"#{name}\" #{type} #{offset} ",
+        _build_expression(measurement)
+      ]
+    end
+
+    macro reveal
+      Compiler.configure_debugger "GRAPH #{self._name}"
+      self._ranges.each do |range|
+        Compiler.configure_debugger "GRAPH_LINE ", *range
+      end
+      self._lines.each do |line|
+        Compiler.configure_debugger "GRAPH_VALUE ", *line
+      end
+    end
+  end
+
+  ;; Helper for profiling blocks
+  macro profile(name)
+    return yield unless Debug.ENABLED
+
+    _start = Measurement.new ".PROFILE_START_#{name}", :vcounter
+    _end   = Measurement.new ".PROFILE_END_#{name}", :vcounter, :add, :vcounter_max
+
+    _start.trigger
+    yield
+    _end.trigger
+
+    _diff = Measurement.new ".PROFILE_DIFF_#{name}", _end, :sub, _start
+    _profile = Measurement.new name, _diff, :mod, :vcounter_max
+    _profile.build
+
+    _graph = Graph.new name
+    _graph.range "0%", 0
+    _graph.range "100%", :vcounter_max
+    _graph.add "duration", _profile
+    _graph.reveal
+  end
+
+end
