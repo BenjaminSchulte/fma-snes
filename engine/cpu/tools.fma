@@ -42,7 +42,6 @@ module CPU
   ;;
   ;; @param bank number - the bank to use
   macro with_bank(bank)
-    BRK
     PHB
     PEA   #bank << 8
     PLB
