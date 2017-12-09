@@ -158,6 +158,8 @@ module SNES
         self.DESTINATION_CODE = $13
       when :Z
         self.DESTINATION_CODE = $14
+      else
+        raise "Unknown destination: #{code}"
       end
     end
 
