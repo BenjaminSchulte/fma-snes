@@ -2,6 +2,34 @@ module PPU
   ;; Controls the backgrounds
   module Background
 
+    ;; Sets the background position
+    macro set_offset(bg, x=nil, y=nil)
+      unless x.nil?
+        _set_offset(BGOFFSET[bg - 1].horizontal, x)
+      end
+
+      unless y.nil?
+        _set_offset(BGOFFSET[bg - 1].vertical, y)
+      end
+    end
+
+    ;; Sets the background position
+    macro _set_offset(target, value)
+      if (value & $FF) == 0
+        STZ   target
+      else
+        LDA   #value & $FF
+        STA   target
+      end
+
+      if (value >> 8) == 0
+        STZ   target
+      else
+        LDA   #value >> 8
+        STA   target
+      end
+    end
+
     ;; Sets the tilemap address for one or many backgrounds
     ;;
     ;; The address must be aligned to $800
