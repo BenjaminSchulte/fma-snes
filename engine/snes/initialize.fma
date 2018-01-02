@@ -4,7 +4,6 @@ module SNES
   ;;
   ;; This function should be invoked at the start of the application.
   def initialize
-    SEP     #$30    ; X,Y,A are 8 bit numbers
     LDA     #$8F    ; screen off, full brightness
     STA     $2100   ; brightness + screen enable register
     STZ     $2101   ; Sprite register (size + address in VRAM)
