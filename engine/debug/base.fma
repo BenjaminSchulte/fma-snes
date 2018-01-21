@@ -33,8 +33,13 @@ module Debug
   ;;
   ;; @param message string - the message which should be logged
   ;; @param level=:info string - one of `trace`, `debug`, `info`, `warn`, `error` or `fatal`
-  macro log(message, level=:info)
+  macro log(*parts, **kwargs)
     return unless ENABLED
+
+    level = :info
+    if kwargs.key? :level
+      level = kwargs[:level]
+    end
 
     LEVEL_ID = "info"
     case level
@@ -54,8 +59,24 @@ module Debug
       raise "Unknown log level '#{level}'. Use trace, debug, info, warn, error, fatal"
     end
 
-    _MSG = "PRINT #{LEVEL_ID} #{message}"
-    _execute _MSG
+    message = ["PRINT ", LEVEL_ID, " "]
+    parts.each do |part|
+      if part.is_a? TypedNumber
+        message.append "$\{"
+        case part.type
+        when :direct_page
+          message.append "dp:"
+          message.append part.number
+        else
+          raise "[ERROR] Do not know how to handle typed number #{part.type}"
+        end
+        message.append "\}"
+      else
+        message.append part
+      end
+    end
+
+    _execute message
   end
 
   ;; Executes a command

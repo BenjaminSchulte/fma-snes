@@ -63,3 +63,8 @@ Debug.only do
   JSR debug_screen
 end
 ----
+
+[[debug-profile]]
+==== `Debug.profile`
+
+Helper for profiling blocks
