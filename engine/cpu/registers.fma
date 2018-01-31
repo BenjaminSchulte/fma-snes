@@ -11,6 +11,35 @@ module CPU
   ;; Accumulator flag
   FLAG_M = $20
 
+
+  ;; Min scope
+  scope :_scope_min, bank: $00, at: $2134
+
+  ;; WRAM data register
+  declare :MPYL, as: :uint8, in: _scope_min
+
+  declare :MPYM, as: :uint8, in: _scope_min
+
+  declare :MPYH, as: :uint8, in: _scope_min
+
+  declare :SLHV, as: :uint8, in: _scope_min
+
+  declare :OAMDATAREAD, as: :uint8, in: _scope_min
+
+  declare :VMDATAREAD, as: :uint16, in: _scope_min
+
+  declare :CGDATAREAD, as: :uint8, in: _scope_min
+
+  declare :OPHCT, as: :uint8, in: _scope_min
+  declare :OPVCT, as: :uint8, in: _scope_min
+  declare :STAT77, as: :uint8, in: _scope_min
+  declare :STAT78, as: :uint8, in: _scope_min
+  declare :APUIO0, as: :uint8, in: _scope_min
+  declare :APUIO1, as: :uint8, in: _scope_min
+  declare :APUIO2, as: :uint8, in: _scope_min
+  declare :APUIO3, as: :uint8, in: _scope_min
+
+
   ;; Lower scope
   scope :_scope_low, bank: $00, at: $2180
 

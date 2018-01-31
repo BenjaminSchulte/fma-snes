@@ -96,4 +96,18 @@ module Debug
 
     CPU.set A:8 if need_to_recover_p
   end
+
+  ;; Counts ticks
+  macro count_ticks(name)
+    SNES65816_start_instruction_counter
+    yield
+    Compiler.print "#{name}: #{SNES65816_end_instruction_counter} ticks"
+  end
+
+  ;; Debugs the number of ticks
+  macro @dump_ticks
+    count_ticks Compiler.current_scope.current_function do
+      yield
+    end
+  end
 end
