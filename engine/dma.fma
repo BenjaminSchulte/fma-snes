@@ -21,7 +21,10 @@ module CPU
     ;; The size
     declare :size, as: :uint16
 
-    declare :_unused, as: :uint8, length: 9
+    ;; HDMA indirect bank
+    declare :indirect_bank, as: :uint8
+
+    declare :_unused, as: :uint8, length: 8
 
 
     ;; Configures the DMA
