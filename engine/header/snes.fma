@@ -55,6 +55,25 @@ module SNES
       self.GAME_CODE = code
     end
 
+    ;; Sets the ram size
+    ;;
+    ;; @param size number - the RAM size
+    macro ram_size(size)
+      case size
+        when 0
+          self.EXPANSION_RAM_SIZE = 0
+        when $800
+          self.EXPANSION_RAM_SIZE = 1
+        when $1000
+          self.EXPANSION_RAM_SIZE = 2
+        when $2000
+          self.EXPANSION_RAM_SIZE = 3
+      else
+        raise "Unsupported SRAM size #{size}"
+      end
+
+    end
+
     ;; Sets the game title
     ;;
     ;; @param title string - the title of the game
