@@ -3,5 +3,6 @@ module SNES::Arch
     self.FRAMES_PER_SECOND = 60
     self.SCREEN_WIDTH = 256
     self.SCREEN_HEIGHT = 224
+    self.TOTAL_SCREEN_HEIGHT = 261
   end
 end
