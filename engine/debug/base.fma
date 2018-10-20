@@ -110,4 +110,31 @@ module Debug
       yield
     end
   end
+
+  ;; Compares whether a bank matches or not
+  macro assert_bank_8(bank)
+    PHA
+    PHB
+    PLA
+    CMP   #bank
+    BEQ   _is_ok_8
+    Debug.log "Bank mismatch. Expected bank to be #{bank}", level: :error
+    BRK
+  _is_ok_8:
+    PLA
+  end
+end
+
+macro @assert_bank(bank)
+  if Debug.ENABLED
+    if A.size_8?
+      Debug.assert_bank_8(bank)
+    else
+      CPU.set A:8
+      Debug.assert_bank_8(bank)
+      CPU.set A:16
+    end
+  end
+
+  yield
 end
