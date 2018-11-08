@@ -18,9 +18,9 @@ module PPU
 
     ;; Writes a color using RGA
     ;;
-    ;; Values must be between `0` and `15`
+    ;; Values must be between `0` and `31`
     macro write_rgb(r, g, b)
-      write ((r >> 3) & $1F) | ((g << 2) & $3E0) | ((b << 7) & $7C00)
+      write((r  & $1F) | ((g & $1F) << 5) | ((b & $1F) << 10))
     end
 
   end

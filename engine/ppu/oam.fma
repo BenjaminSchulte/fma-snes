@@ -3,7 +3,7 @@ module PPU
   module OAM
 
     ;; Configures the oam
-    macro configure(low_table, high_table, small=8, large=16)
+    macro configure(low_table=0, high_table=0, small=8, large=16)
       value = 0
       case "#{small}_#{large}"
       when "8_16"
@@ -27,6 +27,40 @@ module PPU
 
       LDA   #(value << 5) | high | low
       STA   OBSEL
+    end
+
+    ;; Sets the address
+    macro set_address(address)
+      if (address & $FF) == 0
+        STZ   OAMADD
+      else
+        LDA   #address
+        STA   OAMADD
+      end
+
+      if (address & $FF00) == 0
+        STZ   OAMADD + 1
+      else
+        LDA   #address >> 8
+        STA   OAMADD + 1
+      end
+    end
+
+    ;; Copies data directly into the VRAM
+    ;;
+    ;; @param origin address - the address to copy from
+    ;; @param size number - the size of bytes to copy
+    ;; @param destination address - the address to copy data to
+    ;; @param index=0 number - the DMA channel to use
+    macro copy_8(origin, size, destination, index=0)
+      DMA[index].configure       :transfer_1_once
+      DMA[index].set_origin      origin
+      DMA[index].set_destination PPU.OAMDATA
+      DMA[index].set_size        size
+
+      set_address destination
+
+      DMA[index].trigger
     end
   end
 
