@@ -41,13 +41,20 @@ module CPU
   ;; Sets the data bank to a specific one but safes the old one
   ;;
   ;; @param bank number - the bank to use
-  macro with_bank(bank)
-    PHB
-    PEA   #bank << 8
-    PLB
-    PLB
-    yield
-    PLB
+  macro with_bank(bank, from=nil)
+    if from.nil?
+      PHB
+      PEA   #bank << 8
+      PLB
+      PLB
+      yield
+      PLB
+    else
+      PEA   #bank | (from << 8)
+      PLB
+      yield
+      PLB
+    end
   end
 
   ;; Pushes all registers onto the stack before invoking th block
